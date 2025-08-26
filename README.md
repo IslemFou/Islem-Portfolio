@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Creating my portfolio website using React.js et Node.js
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
