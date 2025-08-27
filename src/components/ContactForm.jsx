@@ -7,14 +7,35 @@ function ContactForm() {
         message: "",
     });
 
+    const [status, setStatus] = useState("");
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert(`Thank you, ${formData.name}! Your message has been received.`);
-        setFormData({ name: "", email: "", message: "" });
+        // alert(`Thank you, ${formData.name}! Your message has been received.`);
+        // setFormData({ name: "", email: "", message: "" });
+        try {
+            const response = await fetch("http://localhost:3000/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                setStatus("Message sent successfully!");
+                setFormData({ name: "", email: "", message: "" });
+            } else {
+                setStatus("Error sending message. Please try again later.");
+            }
+        } catch (error) {
+            setStatus("Error sending message. Please try again later.");
+            console.error("Error:", error);
+        }
     };
 
     return (
@@ -63,6 +84,7 @@ function ContactForm() {
                 >
                     Envoyer
                 </button>
+                {status && <p className="mt-4 text-center">{status}</p>}
             </form>
         </div>
     );
